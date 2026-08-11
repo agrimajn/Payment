@@ -118,8 +118,9 @@ It is never written to disk unencrypted.
 ## Current status
 
 - Project scaffolding, dependency management, and environment setup: done.
-- FastAPI application entry point: in progress.
-- Database layer, validation, encryption, tokenization, authentication,
-  and automated tests: not yet implemented.
+- FastAPI application entry point: done.
+- Database layer (SQLite + SQLAlchemy models, `card_tokens` table): done.
+- Validation, encryption, tokenization, authentication, and automated
+  tests: not yet implemented.
 
 This section is updated as functionality lands.
