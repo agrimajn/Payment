@@ -124,7 +124,10 @@ It is never written to disk unencrypted.
   checks): done. Note: the eventual /tokenize endpoint needs a custom
   validation error handler so invalid card numbers are never echoed
   back in a 422 response body.
-- Encryption, tokenization, authentication, and automated tests: not
-  yet implemented.
+- Encryption (Fernet, via crypto.py): done. Verified round-trip
+  correctness, non-deterministic ciphertext for identical plaintext,
+  and tamper detection on corrupted ciphertext.
+- Tokenization, authentication, and automated tests: not yet
+  implemented.
 
 This section is updated as functionality lands.

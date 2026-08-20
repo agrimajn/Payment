@@ -12,3 +12,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./tokenizer.db")
+
+FERNET_KEY: str | None = os.getenv("FERNET_KEY")
+if not FERNET_KEY:
+    raise RuntimeError(
+        "FERNET_KEY is not set. Generate one with "
+        "`python -c \"from cryptography.fernet import Fernet; "
+        "print(Fernet.generate_key().decode())\"` and add it to .env."
+    )
