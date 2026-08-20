@@ -127,7 +127,11 @@ It is never written to disk unencrypted.
 - Encryption (Fernet, via crypto.py): done. Verified round-trip
   correctness, non-deterministic ciphertext for identical plaintext,
   and tamper detection on corrupted ciphertext.
-- Tokenization, authentication, and automated tests: not yet
-  implemented.
+- Tokenization (token_service.py: secrets-based token generation,
+  create/retrieve orchestration tying validation + encryption +
+  storage together): done. Verified full validate -> encrypt ->
+  tokenize -> store -> lookup -> decrypt round-trip, plus a 100,000-
+  token uniqueness check.
+- Authentication and automated tests: not yet implemented.
 
 This section is updated as functionality lands.
