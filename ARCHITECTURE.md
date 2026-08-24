@@ -136,6 +136,11 @@ It is never written to disk unencrypted.
   done. Verified live over HTTP -- successful tokenize/detokenize,
   404 on an unknown token, and confirmed no card data leaks into a
   validation error response.
-- Authentication and automated tests: not yet implemented.
+- API key authentication (auth.py: single shared-secret key checked
+  via a header, constant-time comparison, protecting /tokenize and
+  /detokenize while /health stays open): done. Verified live -- a
+  missing key and a wrong key both correctly return 401, a valid key
+  succeeds, and /health remains reachable without one.
+- Automated tests: not yet implemented.
 
 This section is updated as functionality lands.

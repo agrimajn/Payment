@@ -9,6 +9,7 @@ choosing status codes and translating results into responses.
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
+from app.auth import verify_api_key
 from app.database import get_db
 from app.schemas import (
     CardCreateRequest,
@@ -28,14 +29,23 @@ def health_check() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@router.post("/tokenize", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/tokenize",
+    response_model=TokenResponse,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[Depends(verify_api_key)],
+)
 def tokenize_card(card: CardCreateRequest, db: Session = Depends(get_db)) -> TokenResponse:
     """Validate, encrypt, and store card data, returning a token that references it."""
     record = create_card_token(db, card)
     return TokenResponse(token=record.token, created_at=record.created_at)
 
 
-@router.post("/detokenize", response_model=CardDataResponse)
+@router.post(
+    "/detokenize",
+    response_model=CardDataResponse,
+    dependencies=[Depends(verify_api_key)],
+)
 def detokenize_card(
     request: DetokenizeRequest, db: Session = Depends(get_db)
 ) -> CardDataResponse:
