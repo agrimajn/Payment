@@ -121,9 +121,7 @@ It is never written to disk unencrypted.
 - FastAPI application entry point: done.
 - Database layer (SQLite + SQLAlchemy models, `card_tokens` table): done.
 - Input validation (Pydantic schemas, Luhn checksum, expiration and CVV
-  checks): done. Note: the eventual /tokenize endpoint needs a custom
-  validation error handler so invalid card numbers are never echoed
-  back in a 422 response body.
+  checks): done.
 - Encryption (Fernet, via crypto.py): done. Verified round-trip
   correctness, non-deterministic ciphertext for identical plaintext,
   and tamper detection on corrupted ciphertext.
@@ -132,6 +130,12 @@ It is never written to disk unencrypted.
   storage together): done. Verified full validate -> encrypt ->
   tokenize -> store -> lookup -> decrypt round-trip, plus a 100,000-
   token uniqueness check.
+- REST API (routes.py: POST /tokenize, POST /detokenize, GET /health)
+  wired to a live server, with a custom validation error handler so
+  invalid card numbers are never echoed back in a 422 response body:
+  done. Verified live over HTTP -- successful tokenize/detokenize,
+  404 on an unknown token, and confirmed no card data leaks into a
+  validation error response.
 - Authentication and automated tests: not yet implemented.
 
 This section is updated as functionality lands.

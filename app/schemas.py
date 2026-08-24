@@ -59,6 +59,12 @@ class CardCreateRequest(BaseModel):
         return self
 
 
+class DetokenizeRequest(BaseModel):
+    """Incoming payload for POST /detokenize."""
+
+    token: str
+
+
 class TokenResponse(BaseModel):
     """Returned after successfully tokenizing a card."""
 
