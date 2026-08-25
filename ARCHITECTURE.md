@@ -141,6 +141,8 @@ It is never written to disk unencrypted.
   /detokenize while /health stays open): done. Verified live -- a
   missing key and a wrong key both correctly return 401, a valid key
   succeeds, and /health remains reachable without one.
-- Automated tests: not yet implemented.
+- Automated tests (pytest, 24 tests across encryption, tokenization,
+  validation, and the live API via FastAPI's TestClient, each test
+  running against an isolated in-memory database): done. All passing.
 
 This section is updated as functionality lands.
