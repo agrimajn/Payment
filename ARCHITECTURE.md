@@ -144,5 +144,8 @@ It is never written to disk unencrypted.
 - Automated tests (pytest, 24 tests across encryption, tokenization,
   validation, and the live API via FastAPI's TestClient, each test
   running against an isolated in-memory database): done. All passing.
+- Documentation (README.md: setup, API reference with example
+  requests/responses, project structure, security design summary):
+  done.
 
 This section is updated as functionality lands.
