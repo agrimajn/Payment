@@ -6,6 +6,8 @@ token_service.py. Handlers here only deal with HTTP concerns --
 choosing status codes and translating results into responses.
 """
 
+from datetime import timezone
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -38,7 +40,11 @@ def health_check() -> dict[str, str]:
 def tokenize_card(card: CardCreateRequest, db: Session = Depends(get_db)) -> TokenResponse:
     """Validate, encrypt, and store card data, returning a token that references it."""
     record = create_card_token(db, card)
-    return TokenResponse(token=record.token, created_at=record.created_at)
+    # SQLite silently strips tzinfo on read-back even though the value
+    # stored is always UTC (see models.py) -- reattach it here so the
+    # API response is an unambiguous, explicit UTC timestamp.
+    created_at_utc = record.created_at.replace(tzinfo=timezone.utc)
+    return TokenResponse(token=record.token, created_at=created_at_utc)
 
 
 @router.post(

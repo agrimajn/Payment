@@ -41,6 +41,11 @@ hashing, request flow diagrams, and per-component reasoning — see
 git clone https://github.com/agrimajn/Payment.git
 cd Payment
 
+# Confirm python3 resolves to 3.12+ before creating the venv --
+# on some systems the default python3 is older (e.g. macOS ships 3.9).
+# If so, use a specific interpreter instead, e.g. python3.13.
+python3 --version
+
 # Create and activate a virtual environment
 python3 -m venv venv
 source venv/bin/activate

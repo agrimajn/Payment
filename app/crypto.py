@@ -28,4 +28,10 @@ def decrypt_card_data(ciphertext: str) -> str:
     try:
         return _fernet.decrypt(ciphertext.encode()).decode()
     except InvalidToken:
-        raise ValueError("Card data could not be decrypted: invalid or tampered ciphertext")
+        # `from None` suppresses Python's automatic exception chaining --
+        # without it, the traceback would show both this ValueError and
+        # the original InvalidToken, which is noise for callers who only
+        # care about the ValueError.
+        raise ValueError(
+            "Card data could not be decrypted: invalid or tampered ciphertext"
+        ) from None

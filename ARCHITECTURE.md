@@ -83,16 +83,18 @@ a managed key service later would only touch `crypto.py`.
 ```
 Client                     API                        DB
   |  POST /tokenize          |                          |
+  |  X-API-Key: <key>        |                          |
   |  { card_number, exp,     |                          |
   |    cvv }                  |                          |
   |------------------------->|                          |
-  |                           | 1. Validate input        |
-  |                           | 2. Encrypt card data      |
-  |                           | 3. Generate random token  |
-  |                           | 4. Store (token, cipher)  |
+  |                           | 1. Authenticate caller    |
+  |                           | 2. Validate input         |
+  |                           | 3. Encrypt card data      |
+  |                           | 4. Generate random token  |
+  |                           | 5. Store (token, cipher)  |
   |                           |------------------------->|
   |                           |<-------------------------|
-  |  200 { token: "tok_..." }|                          |
+  |  201 { token: "tok_..." }|                          |
   |<-------------------------|                          |
 ```
 
@@ -101,7 +103,8 @@ Client                     API                        DB
 ```
 Client                     API                        DB
   |  POST /detokenize        |                          |
-  |  { token, API key }      |                          |
+  |  X-API-Key: <key>        |                          |
+  |  { token }                |                          |
   |------------------------->|                          |
   |                           | 1. Authenticate caller    |
   |                           | 2. Look up token          |
@@ -147,5 +150,11 @@ It is never written to disk unencrypted.
 - Documentation (README.md: setup, API reference with example
   requests/responses, project structure, security design summary):
   done.
+- Final review pass: done. Fixed a latent bug where SQLite silently
+  strips timezone info from stored timestamps, which made the
+  /tokenize response's created_at field ambiguous about UTC; the API
+  layer now reattaches it explicitly. Also cleaned up exception
+  chaining in crypto.py and corrected two stale diagrams above (the
+  /tokenize response code and where the API key travels).
 
 This section is updated as functionality lands.
